@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { YOUTUBE_VIDEO_URL } from "../Utils/constant";
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
+import Shimmer from "./Shimmer";
 
 const VideoList = () => {
   const [videoList, setVideoList] = useState([]);
@@ -14,7 +15,7 @@ const VideoList = () => {
     const response = await data.json();
     setVideoList(response?.items);
   };
-  if (videoList.length === 0) return null;
+  if (videoList.length === 0) return <Shimmer/>;
   return (
     <>
       <div className="flex flex-wrap justify-center" >
