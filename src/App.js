@@ -9,15 +9,15 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const appRouter = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Body />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <MainContainer />,
       },
       {
-        path: "/watch",
+        path: '/watch',
         element: <WatchPage />,
       },
     ],

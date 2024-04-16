@@ -5,7 +5,6 @@ import { formatNumber, timeAgo } from "../Utils/helper";
 
 const VideoCard = ({ info,videoId }) => {
   const { snippet, statistics } = info;
-  console.log(snippet);
   const { title, channelTitle, thumbnails, publishedAt } = snippet;
   const isMenuOpenStatus = useSelector((store) => store.app.isMenuOpen);
 

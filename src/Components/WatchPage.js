@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { json, useSearchParams } from "react-router-dom";
 import { closeMenu } from "../Utils/appSlice";
 import {
   YOUTUBE_API_KEY,
   YOUTUBE_CHANNEL_URL,
+  YOUTUBE_COMMENT_URL,
   YOUTUBE_VIDEO_DETAIL_URL,
 } from "../Utils/constant";
 import { dateFormat, formatNumber } from "../Utils/helper";
@@ -13,12 +14,21 @@ const WatchPage = () => {
   const [searchParams] = useSearchParams();
   const [videoDetails, setVideoDetails] = useState([]);
   const [channelDetails, setChannelDetails] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [showMore, setShowMore] = useState(false);
+
   const dispatch = useDispatch();
   const videoId = searchParams.get("v");
   useEffect(() => {
     dispatch(closeMenu());
     getVideoDetails();
+    getVideoComments();
   }, []);
+  const toggleDescription = () => {
+    const description = document.querySelector(".line-clamp-2");
+    description.classList.toggle("line-clamp-none");
+    setShowMore(!showMore);
+  };
   const getVideoDetails = async () => {
     const data = await fetch(
       `${YOUTUBE_VIDEO_DETAIL_URL}id=${videoId}&key=${YOUTUBE_API_KEY}`
@@ -34,11 +44,28 @@ const WatchPage = () => {
     const data = await fetch(
       `${YOUTUBE_CHANNEL_URL}id=${channel_id}&key=${YOUTUBE_API_KEY}`
     );
+    // const data = await fetch(
+    //     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cid%2Cstatistics%2CcontentDetails&id=4}&key=${YOUTUBE_API_KEY}`
+    //   );
+    //   const data1 = await fetch(
+    //     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cid%2Cstatistics%2CcontentDetails&id=4}&key=${YOUTUBE_API_KEY}`,{
+    //         method:"POST",
+    //         headers:{
+    //           "Content-Type":"application/json"
+    //         },
+    //         body:JSON.stringify({"id":channel_id})
+    //       }
+    //   );
     const channelData = await data.json();
     setChannelDetails(channelData?.items);
-    console.log(channelData);
-
-    // setVideoDetails(videoData?.items);
+  };
+  const getVideoComments = async () => {
+    const data = await fetch(
+      `${YOUTUBE_COMMENT_URL + videoId}&key=${YOUTUBE_API_KEY}`
+    );
+    const commentsDetails = await data.json();
+    console.log(commentsDetails?.items);
+    setComments(commentsDetails?.items);
   };
 
   return (
@@ -122,7 +149,17 @@ const WatchPage = () => {
                   {dateFormat(videoDetails?.[0]?.snippet?.publishedAt)}
                 </span>
               </p>
-              <p>{videoDetails?.[0]?.snippet?.description}</p>
+              <div className="overflow-hidden">
+                <p className="line-clamp-2">
+                  {videoDetails?.[0]?.snippet?.description}
+                </p>
+                <button
+                  onClick={toggleDescription}
+                  className="text-blue-500  mt-2 focus:outline-none"
+                >
+                  {showMore ? "Show less" : "Show more"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

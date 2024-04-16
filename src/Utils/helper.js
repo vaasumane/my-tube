@@ -37,3 +37,23 @@ export const dateFormat = (newdate) => {
   const formattedDate = `${month} ${day}, ${year}`;
   return formattedDate;
 };
+
+// export const MakeCurlApi = async (url, testdata = "") => {
+//     const response = await fetch(url, {
+//       method: "POST",
+//       headers: {
+//         "Authorzation": "Bearer lkkjhgfd",
+//       },
+//       body: testdata,
+//     });
+//     const data = await response.json();
+//     return data;
+
+//   // fetchApi("test.silocloud.io"+route, formdata);
+// };
+// const testD = new FormData();
+// testD.append("kjhg","jh");
+
+// MakeCurlApi("api.silocloud.io/channle_-lis", testD);
+
+// MakeCurlApi("test.silocloud.io/channle-lis", formdata);
