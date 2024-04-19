@@ -111,7 +111,7 @@ const Header = () => {
               </ul>
             )}
           </div>
-          <div className="hidden md:block flex items-center space-x-8 max-md:ml-auto">
+          <div className="hidden md:block  items-center space-x-8 max-md:ml-auto">
             <img src="./user_image.png" className="h-8" />
           </div>
         </div>
