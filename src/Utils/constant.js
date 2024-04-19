@@ -6,3 +6,5 @@ export const YOUTUBE_CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/ch
 export const YOUTUBE_COMMENT_URL =`https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Cid%2Creplies&maxResults=100&videoId=`;
 
 export const YOUTUBE_SEARCH_URL = 'http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
+
+export const YOUTUBE_VIDEO_SEARCH_URL = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&safeSearch=strict&';

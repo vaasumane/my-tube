@@ -44,18 +44,6 @@ const WatchPage = () => {
     const data = await fetch(
       `${YOUTUBE_CHANNEL_URL}id=${channel_id}&key=${YOUTUBE_API_KEY}`
     );
-    // const data = await fetch(
-    //     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cid%2Cstatistics%2CcontentDetails&id=4}&key=${YOUTUBE_API_KEY}`
-    //   );
-    //   const data1 = await fetch(
-    //     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cid%2Cstatistics%2CcontentDetails&id=4}&key=${YOUTUBE_API_KEY}`,{
-    //         method:"POST",
-    //         headers:{
-    //           "Content-Type":"application/json"
-    //         },
-    //         body:JSON.stringify({"id":channel_id})
-    //       }
-    //   );
     const channelData = await data.json();
     setChannelDetails(channelData?.items);
   };
@@ -73,21 +61,20 @@ const WatchPage = () => {
       <div className="lg:flex">
         <div className="lg:w-2/3">
           <iframe
-            width="900"
-            height="500"
             src={"https://www.youtube.com/embed/" + videoId}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
-            className="rounded-xl"
+            className="rounded-xl md:w-[900px] md:h-[500px]"
           ></iframe>
+
           <div className="py-5">
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-2xl font-bold break-words">
               {videoDetails?.[0]?.snippet?.title}
             </h1>
-            <div className="flex items-center justify-between py-3">
+            <div className="md:flex items-center justify-between py-3">
               <div className="flex gap-3 my-3">
                 <img
                   className="rounded-full h-14 w-14 object-cover"
@@ -112,7 +99,7 @@ const WatchPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex gap-1">
+              <div className="flex flex-wrap gap-1">
                 <div className="flex">
                   <button className="rounded-l-3xl hover:bg-gray-200 bg-gray-100 p-2 px-3 flex items-center gap-2 border-r-2">
                     <img src="./like.png" className="h-4 w-4" />
@@ -137,7 +124,7 @@ const WatchPage = () => {
                 </button>
               </div>
             </div>
-            <div className="bg-gray-100 py-2 my-3 rounded-md p-2">
+            <div className="bg-gray-100 py-2 my-3 rounded-md p-2 ">
               <p className="font-semibold">
                 <span>
                   {new Intl.NumberFormat("en-IN", {

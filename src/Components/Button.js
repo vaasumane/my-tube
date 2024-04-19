@@ -2,9 +2,9 @@ import React from 'react'
 
 const Button = ({name}) => {
   return (
-    <>
-      <button className='bg-gray-200 px-3 py-2 m-2 rounded-lg'>{name}</button>
-    </>
+    <div>
+      <button className='bg-gray-200 px-3 py-2 m-2 rounded-lg w-36 '>{name}</button>
+    </div>
   )
 }
 

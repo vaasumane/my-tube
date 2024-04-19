@@ -11,7 +11,7 @@ const VideoCard = ({ info,videoId }) => {
   
   return (
     <>
-      <div className={"p-2 h-auto" + (isMenuOpenStatus ? " w-64" : " w-60")}>
+      <div className={"p-2 h-auto" + (isMenuOpenStatus ? " w-80 lg:w-64" : " w-80 lg:w-60")} key={videoId}>
 
       <Link to={"watch?v="+videoId} >
         <img
@@ -23,7 +23,7 @@ const VideoCard = ({ info,videoId }) => {
           <h1 className="font-bold">{title}</h1>
           <h2>{channelTitle}</h2>
           <p>
-            {formatNumber(statistics.viewCount)} views | {timeAgo(publishedAt)}
+            {/* {formatNumber(statistics?.viewCount)} views | {timeAgo(publishedAt)} */}
           </p>
         </div>
         </Link>

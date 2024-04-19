@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../Utils/appSlice";
 import { Link } from "react-router-dom";
 import { YOUTUBE_SEARCH_URL } from "../Utils/constant";
-import { cacheResult } from "../Utils/searchSlice";
+import { cacheResult, setSearchText } from "../Utils/searchSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [showSuggestionList, setShowSuggestionList] = useState(false);
+  const dropdownRef = useRef(null);
   const handleToggleMenu = () => {
     dispatch(toggleMenu());
   };
-  const getSearchData = useSelector((store) => store.search);
+  const getSearchData = useSelector((store) => store.search.searchItems);
   useEffect(() => {
     const timeInterval = setTimeout(() => {
       if (getSearchData[searchQuery]) {
@@ -26,6 +27,20 @@ const Header = () => {
       clearTimeout(timeInterval);
     };
   }, [searchQuery]);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowSuggestionList(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const getSearchedItems = async () => {
     const data = await fetch(YOUTUBE_SEARCH_URL + searchQuery);
     const response = await data.json();
@@ -36,28 +51,42 @@ const Header = () => {
       })
     );
   };
+  const setSelectedText = (searchText) => {
+    dispatch(setSearchText(searchText));
+    setShowSuggestionList(false);
+    setSearchQuery(searchText);
+  };
+  const HandleSearchChange = (searchText) => {
+    setSearchQuery(searchText);
+    if (searchText === "") {
+      dispatch(setSearchText(""));
+    }
+  };
   return (
     <>
-      <div className="grid grid-flow-col p-2 m-2 items-center ">
-        <div className="col-span-1 flex items-center">
-          <img
-            src="./hamburger-menu.png"
-            className="h-8 cursor-pointer"
-            onClick={() => handleToggleMenu()}
-          />
-          <a href="/">
-            <img src="./youtube-logo.jpg" className="h-20" />
-          </a>
-        </div>
-        <div className="col-span-10 text-center">
-          <div className="relative">
+      <header className="flex shadow-sm bg-white font-[sans-serif] min-h-[70px]">
+        <div className="flex flex-wrap items-center justify-between sm:px-10 px-6 py-3 relative lg:gap-y-4 gap-y-6 gap-x-4 w-full">
+          <div className=" flex items-center">
+            <img
+              src="./hamburger-menu.png"
+              className="h-8 cursor-pointer"
+              onClick={() => handleToggleMenu()}
+            />
+            <a href="/">
+              <img src="./youtube-logo.jpg" className="h-20" />
+            </a>
+          </div>
+          <div className="flex items-center space-x-8 max-md:ml-auto md:hidden">
+            <img src="./user_image.png" className="h-8" />
+          </div>
+          <div className="lg:w-2/4 max-md:w-full relative">
             <input
               type="text"
-              className="w-1/2 border border-gray-400 p-2 rounded-l-full"
+              className=" border border-gray-400 p-2 rounded-l-full w-10/12"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={()=>setShowSuggestionList(true)}
-              onBlur={()=>setShowSuggestionList(false)}
+              onChange={(e) => HandleSearchChange(e.target.value)}
+              onFocus={() => setShowSuggestionList(true)}
+              // onBlur={() => setShowSuggestionList(false)}
             />
             <button
               type="button"
@@ -65,19 +94,28 @@ const Header = () => {
             >
               🔍
             </button>
-            {showSuggestionList && <ul className="absolute left-[23%] mr-4  w-1/2 bg-white rounded-lg">
-              {
-                searchList.map((search) => {
-                  return <li key={search} className="py-1 hover:bg-gray-100 text-start p-3">{"🔍 " + search}</li>;
+            {showSuggestionList && (
+              //
+              <ul className="absolute mr-4 w-10/12 bg-white rounded-lg" ref={dropdownRef}>
+                {searchList.map((search) => {
+                  return (
+                    <li
+                      key={search}
+                      className="py-1 hover:bg-gray-100 text-start p-3"
+                      onClick={() => setSelectedText(search)}
+                    >
+                      {"🔍 " + search}
+                    </li>
+                  );
                 })}
-            </ul> }
-            
+              </ul>
+            )}
+          </div>
+          <div className="hidden md:block flex items-center space-x-8 max-md:ml-auto">
+            <img src="./user_image.png" className="h-8" />
           </div>
         </div>
-        <div className="col-span-1 text-center">
-          <img src="./user_image.png" className="h-8" />
-        </div>
-      </div>
+      </header>
     </>
   );
 };
