@@ -42,7 +42,7 @@ const VideoList = () => {
       <div className="flex flex-wrap justify-center">
         {videoList.length > 0 &&
           videoList.map((video,index) => (
-            <VideoCard key={video.id+index} info={video} videoId={video.id} />
+            <VideoCard key={video.id+index} info={video} videoId={typeof video.id === "object" ? video.id.videoId : video.id} />
           ))}
       </div>
     </>

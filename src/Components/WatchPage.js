@@ -9,12 +9,13 @@ import {
   YOUTUBE_VIDEO_DETAIL_URL,
 } from "../Utils/constant";
 import { dateFormat, formatNumber } from "../Utils/helper";
+import VideooComments from "./VideooComments";
+import LiveMessages from "./LiveMessages";
 
 const WatchPage = () => {
   const [searchParams] = useSearchParams();
   const [videoDetails, setVideoDetails] = useState([]);
   const [channelDetails, setChannelDetails] = useState([]);
-  const [comments, setComments] = useState([]);
   const [showMore, setShowMore] = useState(false);
 
   const dispatch = useDispatch();
@@ -22,7 +23,6 @@ const WatchPage = () => {
   useEffect(() => {
     dispatch(closeMenu());
     getVideoDetails();
-    getVideoComments();
   }, []);
   const toggleDescription = () => {
     const description = document.querySelector(".line-clamp-2");
@@ -34,7 +34,6 @@ const WatchPage = () => {
       `${YOUTUBE_VIDEO_DETAIL_URL}id=${videoId}&key=${YOUTUBE_API_KEY}`
     );
     const videoData = await data.json();
-    console.log(videoData.items);
     if (videoData?.items?.[0]?.snippet?.channelId) {
       getChannelDetails(videoData?.items?.[0]?.snippet?.channelId);
     }
@@ -47,14 +46,7 @@ const WatchPage = () => {
     const channelData = await data.json();
     setChannelDetails(channelData?.items);
   };
-  const getVideoComments = async () => {
-    const data = await fetch(
-      `${YOUTUBE_COMMENT_URL + videoId}&key=${YOUTUBE_API_KEY}`
-    );
-    const commentsDetails = await data.json();
-    console.log(commentsDetails?.items);
-    setComments(commentsDetails?.items);
-  };
+ 
 
   return (
     <div className="col-span-11 p-5 m-2">
@@ -137,9 +129,13 @@ const WatchPage = () => {
                 </span>
               </p>
               <div className="overflow-hidden">
-                <p className="line-clamp-2">
-                  {videoDetails?.[0]?.snippet?.description}
-                </p>
+                <div className="line-clamp-2">
+                  {videoDetails?.[0]?.snippet?.description
+                    .split(/\r\n|\r|\n/)
+                    .map((t, index) => {
+                      return <p key={index + "des"}>{t}</p>;
+                    })}
+                </div>
                 <button
                   onClick={toggleDescription}
                   className="text-blue-500  mt-2 focus:outline-none"
@@ -149,8 +145,13 @@ const WatchPage = () => {
               </div>
             </div>
           </div>
+          <div>
+            <VideooComments videoId={videoId} />
+          </div>
         </div>
-        <div className="lg:w-1/3">kjhg</div>
+        <div className="lg:w-1/3">
+          <LiveMessages />
+        </div>
       </div>
     </div>
   );
