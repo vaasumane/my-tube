@@ -9,6 +9,8 @@ const searchSlice = createSlice({
   reducers: {
     cacheResult: (state, action) => {
     //   state.searchItems = Object.assign(state,action.payload);
+    const entries = Object.entries(state.searchItems).slice(1, 50);
+     Object.fromEntries(entries);
     return {
         ...state,
         searchItems: {
@@ -18,7 +20,6 @@ const searchSlice = createSlice({
     };
     },
     setSearchText: (state, action) => {
-        // state.searchText = action.payload;
         return {
             ...state,
             searchText: action.payload

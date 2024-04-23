@@ -38,22 +38,20 @@ export const dateFormat = (newdate) => {
   return formattedDate;
 };
 
-// export const MakeCurlApi = async (url, testdata = "") => {
-//     const response = await fetch(url, {
-//       method: "POST",
-//       headers: {
-//         "Authorzation": "Bearer lkkjhgfd",
-//       },
-//       body: testdata,
-//     });
-//     const data = await response.json();
-//     return data;
+export const convertDuration = (duration) => {
+  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
 
-//   // fetchApi("test.silocloud.io"+route, formdata);
-// };
-// const testD = new FormData();
-// testD.append("kjhg","jh");
+  const hours = parseInt(match[1]) || 0;
+  const minutes = parseInt(match[2]) || 0;
+  const seconds = parseInt(match[3]) || 0;
 
-// MakeCurlApi("api.silocloud.io/channle_-lis", testD);
+  let formattedDuration = '';
 
-// MakeCurlApi("test.silocloud.io/channle-lis", formdata);
+  if (hours > 0) {
+    formattedDuration += hours.toString().padStart(2, '0') + ':';
+  }
+
+  formattedDuration += minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+
+  return formattedDuration;
+};

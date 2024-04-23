@@ -7,16 +7,44 @@ import {
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearVideoList, setVideoItemList } from "../Utils/videoSlice";
 
 const VideoList = () => {
-  const [videoList, setVideoList] = useState([]);
-  const [intialVideoList, setIntialVideoList] = useState([]);
-  const [OldVideos, setOldVideos] = useState([]);
+  const [showShimmer, setshowShimmer] = useState(false);
+  const [pageToken, setPageToken] = useState("");
   const getSearchText = useSelector((store) => store.search.searchText);
-  console.log(getSearchText);
+  const dispatch = useDispatch();
+  const getvideoList1 = useSelector((store) => store.video.videoItems);
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+  
+  const handleScroll = debounce(() => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+      HandleVideoScroll();
+    }
+  }, 200);
+  
   useEffect(() => {
-    if (getSearchText && getSearchText.trim() !== "" && getSearchText !== undefined) {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [pageToken]);
+  
+  useEffect(() => {
+    if (
+      getSearchText &&
+      getSearchText.trim() !== "" &&
+      getSearchText !== undefined
+    ) {
       getSearchVideoList();
     } else {
       getVideoList();
@@ -24,25 +52,64 @@ const VideoList = () => {
   }, [getSearchText]);
 
   const getVideoList = async () => {
-      const data = await fetch(YOUTUBE_VIDEO_URL);
-      const response = await data.json();
-      setVideoList(response?.items);
-      setOldVideos(response?.items);
+    const data = await fetch(YOUTUBE_VIDEO_URL + `&key=${YOUTUBE_API_KEY}`);
+    const response = await data.json();
+    setPageToken(response?.nextPageToken ? response?.nextPageToken :"" );
+
+    dispatch(clearVideoList());
+    dispatch(setVideoItemList(response?.items));
   };
   const getSearchVideoList = async () => {
     const data = await fetch(
       YOUTUBE_VIDEO_SEARCH_URL + `q=${getSearchText}&key=${YOUTUBE_API_KEY}`
     );
     const response = await data.json();
-    setVideoList(response?.items);
+    setPageToken(response?.nextPageToken ? response?.nextPageToken :"" );
+   
+    dispatch(clearVideoList());
+    dispatch(setVideoItemList(response?.items));
   };
-  if (videoList.length === 0) return <Shimmer />;
+  const HandleVideoScroll = async () => {
+    
+      console.log(pageToken);
+      if (pageToken !== "") {
+        if (
+          getSearchText &&
+          getSearchText.trim() !== "" &&
+          getSearchText !== undefined
+        ) {
+          const data = await fetch(
+            YOUTUBE_VIDEO_SEARCH_URL + `&pageToken=${pageToken}&q=${getSearchText}&key=${YOUTUBE_API_KEY}`
+          );
+          const response = await data.json();
+          setPageToken(response?.nextPageToken);
+          dispatch(setVideoItemList(response?.items));
+
+        } else {
+          const data = await fetch(
+            YOUTUBE_VIDEO_URL + `&pageToken=${pageToken}&key=${YOUTUBE_API_KEY}`
+          );
+          const response = await data.json();
+          setPageToken(response?.nextPageToken);
+          dispatch(setVideoItemList(response?.items));
+        }
+       
+      }
+    
+  };
+  if (getvideoList1.length === 0) return <Shimmer />;
   return (
     <>
-      <div className="flex flex-wrap justify-center">
-        {videoList.length > 0 &&
-          videoList.map((video,index) => (
-            <VideoCard key={video.id+index} info={video} videoId={typeof video.id === "object" ? video.id.videoId : video.id} />
+      <div className="flex flex-wrap justify-center" id="video-list">
+        {getvideoList1.length > 0 &&
+          getvideoList1.map((video, index) => (
+            <VideoCard
+              key={video.id + index}
+              info={video}
+              videoId={
+                typeof video.id === "object" ? video.id.videoId : video.id
+              }
+            />
           ))}
       </div>
     </>

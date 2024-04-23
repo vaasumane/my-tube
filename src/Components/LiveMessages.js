@@ -16,6 +16,7 @@ const LiveMessages = () => {
     const[liveMessage,setLiveMessage] = useState("");
   const dispatch = useDispatch();
   const getLiveMessages = useSelector((store) => store.chat.messages);
+
   useEffect(() => {
     const messageInterval = setInterval(() => {
       dispatch(

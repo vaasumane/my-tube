@@ -19,6 +19,7 @@ const Header = () => {
     const timeInterval = setTimeout(() => {
       if (getSearchData[searchQuery]) {
         setSearchList(getSearchData[searchQuery]);
+        setShowSuggestionList(true);
       } else {
         getSearchedItems();
       }
@@ -35,10 +36,21 @@ const Header = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+    const handleScroll = (event) =>{
+        const scrollTarget = document.getElementById('scrollTarget');
+        if (window.scrollY > 100) {
+          scrollTarget.classList.add('fixed');
+        } else {
+          scrollTarget.classList.remove('fixed');
+        }
+    }
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
     };
+    
   }, []);
 
   const getSearchedItems = async () => {
@@ -55,6 +67,7 @@ const Header = () => {
     dispatch(setSearchText(searchText));
     setShowSuggestionList(false);
     setSearchQuery(searchText);
+    window.location.href = "/";
   };
   const HandleSearchChange = (searchText) => {
     setSearchQuery(searchText);
@@ -62,10 +75,11 @@ const Header = () => {
       dispatch(setSearchText(""));
     }
   };
+ 
   return (
     <>
-      <header className="flex shadow-sm bg-white font-[sans-serif] min-h-[70px]">
-        <div className="flex flex-wrap items-center justify-between sm:px-10 px-6 py-3 relative lg:gap-y-4 gap-y-6 gap-x-4 w-full">
+      <header className="flex shadow-sm bg-white font-[sans-serif] min-h-[70px] relative">
+        <div id="scrollTarget" className="flex flex-wrap items-center justify-between sm:px-10 px-6 py-3  lg:gap-y-4 gap-y-6 gap-x-4 w-full  bg-white z-10">
           <div className=" flex items-center">
             <img
               src="./hamburger-menu.png"
