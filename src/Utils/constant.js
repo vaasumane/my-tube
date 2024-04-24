@@ -7,3 +7,4 @@ export const YOUTUBE_COMMENT_URL =`https://youtube.googleapis.com/youtube/v3/com
 export const YOUTUBE_SEARCH_URL = 'http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
 export const YOUTUBE_VIDEO_SEARCH_URL = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&safeSearch=strict&';
 export const YOUTUBE_RELATED_VIDEOS_URL='https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cid%2Cstatistics%2CcontentDetails&chart=mostPopular&maxResults=50&';
+export const YOUTUBE_CATEGORIES_URL= 'https://youtube.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=IN&key='+YOUTUBE_API_KEY;

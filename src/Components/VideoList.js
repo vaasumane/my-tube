@@ -16,6 +16,7 @@ const VideoList = () => {
   const getSearchText = useSelector((store) => store.search.searchText);
   const dispatch = useDispatch();
   const getvideoList1 = useSelector((store) => store.video.videoItems);
+  const getcategory = useSelector((store) => store.search.category);
   const debounce = (func, delay) => {
     let timeoutId;
     return (...args) => {
@@ -25,20 +26,23 @@ const VideoList = () => {
       }, delay);
     };
   };
-  
+
   const handleScroll = debounce(() => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 100
+    ) {
       HandleVideoScroll();
     }
   }, 200);
-  
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [pageToken]);
-  
+
   useEffect(() => {
     if (
       getSearchText &&
@@ -50,52 +54,68 @@ const VideoList = () => {
       getVideoList();
     }
   }, [getSearchText]);
+  useEffect(() => {
+    getVideoList();
+  }, [getcategory]);
 
   const getVideoList = async () => {
-    const data = await fetch(YOUTUBE_VIDEO_URL + `&key=${YOUTUBE_API_KEY}`);
+    let data;
+    if (getcategory !== "" && getcategory !== undefined) {
+      data = await fetch(
+        YOUTUBE_VIDEO_URL +
+          `&videoCategoryId=${getcategory}&key=${YOUTUBE_API_KEY}`
+      );
+    } else {
+      data = await fetch(
+        YOUTUBE_VIDEO_URL + `&key=${YOUTUBE_API_KEY}`
+      );
+    }
     const response = await data.json();
-    setPageToken(response?.nextPageToken ? response?.nextPageToken :"" );
+    if (!data.ok) {
+      console.log("Error:", data.status, data.statusText);
+      return;
+    }
+    if (response.items.length > 0) {
+      setPageToken(response?.nextPageToken ? response?.nextPageToken : "");
 
-    dispatch(clearVideoList());
-    dispatch(setVideoItemList(response?.items));
+      dispatch(clearVideoList());
+      dispatch(setVideoItemList(response?.items));
+    }
   };
   const getSearchVideoList = async () => {
     const data = await fetch(
       YOUTUBE_VIDEO_SEARCH_URL + `q=${getSearchText}&key=${YOUTUBE_API_KEY}`
     );
     const response = await data.json();
-    setPageToken(response?.nextPageToken ? response?.nextPageToken :"" );
-   
+    setPageToken(response?.nextPageToken ? response?.nextPageToken : "");
+
     dispatch(clearVideoList());
     dispatch(setVideoItemList(response?.items));
   };
   const HandleVideoScroll = async () => {
-    
-      console.log(pageToken);
-      if (pageToken !== "") {
-        if (
-          getSearchText &&
-          getSearchText.trim() !== "" &&
-          getSearchText !== undefined
-        ) {
-          const data = await fetch(
-            YOUTUBE_VIDEO_SEARCH_URL + `&pageToken=${pageToken}&q=${getSearchText}&key=${YOUTUBE_API_KEY}`
-          );
-          const response = await data.json();
-          setPageToken(response?.nextPageToken);
-          dispatch(setVideoItemList(response?.items));
-
-        } else {
-          const data = await fetch(
-            YOUTUBE_VIDEO_URL + `&pageToken=${pageToken}&key=${YOUTUBE_API_KEY}`
-          );
-          const response = await data.json();
-          setPageToken(response?.nextPageToken);
-          dispatch(setVideoItemList(response?.items));
-        }
-       
+    console.log(pageToken);
+    if (pageToken !== "") {
+      if (
+        getSearchText &&
+        getSearchText.trim() !== "" &&
+        getSearchText !== undefined
+      ) {
+        const data = await fetch(
+          YOUTUBE_VIDEO_SEARCH_URL +
+            `&pageToken=${pageToken}&q=${getSearchText}&key=${YOUTUBE_API_KEY}`
+        );
+        const response = await data.json();
+        setPageToken(response?.nextPageToken);
+        dispatch(setVideoItemList(response?.items));
+      } else {
+        const data = await fetch(
+          YOUTUBE_VIDEO_URL + `&pageToken=${pageToken}&key=${YOUTUBE_API_KEY}`
+        );
+        const response = await data.json();
+        setPageToken(response?.nextPageToken);
+        dispatch(setVideoItemList(response?.items));
       }
-    
+    }
   };
   if (getvideoList1.length === 0) return <Shimmer />;
   return (

@@ -7,7 +7,7 @@ const MainContainer = () => {
   const isMenuOpenStatus = useSelector((store) => store.app.isMenuOpen);
 
   return (
-    <div className={"col-span-11 " + (isMenuOpenStatus ? " lg:w-5/6" : " w-full ")}>
+    <div className={"col-span-11 w-full" + (isMenuOpenStatus ? " lg:w-5/6" : " lg:w-full ")}>
       <ButtonList/>
       <VideoList/>
     </div>

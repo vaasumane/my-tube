@@ -27,11 +27,12 @@
 }
 @media (min-width: 1536px) {
   .container.button-container {
-    max-width: calc(1536px - 203px) !important;
+    /* max-width: calc(1536px - 203px) !important; */
   }
 }
 @media (max-width: 375px) {
   .btn-reply {
     top: 130px;
   }
+
 }

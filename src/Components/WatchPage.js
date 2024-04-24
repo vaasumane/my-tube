@@ -13,6 +13,7 @@ import VideooComments from "./VideooComments";
 import LiveMessages from "./LiveMessages";
 import WatchShimmer from "./WatchShimmer";
 import RelatedVideoList from "./RelatedVideoList";
+import Overlay from "./Overlay";
 
 const WatchPage = () => {
   const [searchParams] = useSearchParams();
@@ -157,7 +158,7 @@ const WatchPage = () => {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="hidden lg:block">
                 <VideooComments videoId={videoId} />
               </div>
             </div>

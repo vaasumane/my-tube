@@ -5,6 +5,7 @@ const searchSlice = createSlice({
   initialState: {
     searchItems: {}, // Initialize as empty object
     searchText: "",
+    category: "",
   },
   reducers: {
     cacheResult: (state, action) => {
@@ -26,8 +27,15 @@ const searchSlice = createSlice({
         };
          
     },
+    setCategory: (state, action) => {
+      return {
+          ...state,
+          category: action.payload
+      };
+       
+  },
   },
 });
 
-export const { cacheResult, setSearchText } = searchSlice.actions;
+export const { cacheResult, setSearchText,setCategory } = searchSlice.actions;
 export default searchSlice.reducer;

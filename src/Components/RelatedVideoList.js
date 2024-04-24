@@ -9,12 +9,12 @@ const RelatedVideoCard = ({ info }) => {
   return (
     <>
       <div>
-        <div className="p-2 shadow flex  gap-3 rounded-lg w-full my-3">
+        <div className="p-2 shadow lg:flex  gap-3 rounded-lg w-full my-3">
           <div className="relative ">
             <img
               src={info?.snippet?.thumbnails?.medium?.url}
               alt={info?.snippet?.title}
-              className="w-64 h-24 object-cover rounded-lg"
+              className="lg:w-64 lg:h-24 w-80 h-44 object-cover rounded-lg"
             />
             <span className="absolute right-1 bottom-2 text-white p-1 bg-black rounded-md text-xs">
               {convertDuration(info?.contentDetails?.duration)}
