@@ -10,6 +10,7 @@ const Sidebar = () => {
   if(!isMenuOpenStatus) return null;
   return (
     <>
+    
       <div className="hidden lg:block  px-4 py-2 shadow-lg m-2 lg:w-1/4 sticky-sidebar">
         <ul className=" border-b-2 pb-2">
           <li className="pb-2 font-bold"><Link to="/">Home</Link></li>

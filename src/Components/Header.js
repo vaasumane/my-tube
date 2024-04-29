@@ -83,7 +83,7 @@ const Header = () => {
           <div className=" flex items-center">
             <img
               src="./hamburger-menu.png"
-              className="h-8 cursor-pointer "
+              className="h-8 cursor-pointer hidden lg:block"
               onClick={() => handleToggleMenu()}
             />
             <a href="/">
