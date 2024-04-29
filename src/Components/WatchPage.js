@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { json, useSearchParams } from "react-router-dom";
+import { Link, NavLink, json, useSearchParams } from "react-router-dom";
 import { closeMenu } from "../Utils/appSlice";
 import {
   YOUTUBE_API_KEY,
@@ -13,6 +13,7 @@ import VideooComments from "./VideooComments";
 import LiveMessages from "./LiveMessages";
 import WatchShimmer from "./WatchShimmer";
 import RelatedVideoList from "./RelatedVideoList";
+import ChannelProfile from "./ChannelProfile";
 
 const WatchPage = () => {
   const [searchParams] = useSearchParams();
@@ -55,9 +56,9 @@ const WatchPage = () => {
   return (
     <>
       {showShimmer ? (
-        <WatchShimmer/>
+        <WatchShimmer />
       ) : (
-        <div className="col-span-11 p-5 m-2">
+        <div className="col-span-11 p-5 lg:m-2">
           <div className="lg:flex justify-between">
             <div className="lg:w-2/3">
               <iframe
@@ -76,13 +77,23 @@ const WatchPage = () => {
                 </h1>
                 <div className="md:flex items-center justify-between py-3">
                   <div className="flex gap-3 my-3">
-                    <img
+                    <div className="h-14 w-14">
+                      <NavLink
+                        to={`/channel/${videoDetails?.[0]?.snippet?.channelId}`}
+                        className="h-8 w-8"
+                      >
+                        <ChannelProfile
+                          channel_id={videoDetails?.[0]?.snippet?.channelId}
+                        />
+                      </NavLink>
+                    </div>
+                    {/* <img
                       className="rounded-full h-14 w-14 object-cover"
                       alt="channel-image"
                       src={
                         channelDetails?.[0]?.snippet?.thumbnails?.medium?.url
                       }
-                    />
+                    /> */}
                     <div>
                       <h2 className="font-semibold">
                         {channelDetails?.[0]?.snippet?.title}
@@ -164,7 +175,7 @@ const WatchPage = () => {
             <div className={isMenuOpenStatus ? "lg:w-1/4" : "lg:w-1/3"}>
               {/* <LiveMessages />
                */}
-               <RelatedVideoList VideoCategoryID="24"/>
+              <RelatedVideoList VideoCategoryID="24" />
             </div>
           </div>
         </div>

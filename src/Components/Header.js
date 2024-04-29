@@ -67,7 +67,7 @@ const Header = () => {
     dispatch(setSearchText(searchText));
     setShowSuggestionList(false);
     setSearchQuery(searchText);
-    window.location.href = "/";
+    // window.location.href = "/";
   };
   const HandleSearchChange = (searchText) => {
     setSearchQuery(searchText);
@@ -83,7 +83,7 @@ const Header = () => {
           <div className=" flex items-center">
             <img
               src="./hamburger-menu.png"
-              className="h-8 cursor-pointer"
+              className="h-8 cursor-pointer "
               onClick={() => handleToggleMenu()}
             />
             <a href="/">

@@ -25,14 +25,14 @@
 .text-comment a {
   color: blue;
 }
-@media (min-width: 1536px) {
-  .container.button-container {
-    /* max-width: calc(1536px - 203px) !important; */
-  }
+.sticky-sidebar {
+  position: sticky;
+  height: 90vh;
+  overflow: auto;
+  top: 6rem;
 }
 @media (max-width: 375px) {
   .btn-reply {
     top: 130px;
   }
-
 }

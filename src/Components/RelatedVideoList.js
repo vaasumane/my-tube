@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { YOUTUBE_API_KEY, YOUTUBE_RELATED_VIDEOS_URL } from "../Utils/constant";
 import { convertDuration, formatNumber, timeAgo } from "../Utils/helper";
 import RelatedShimmer from "./RelatedShimmer";
-import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip } from "react-tooltip";
 
 const RelatedVideoCard = ({ info }) => {
   return (
     <>
       <div>
-        <div className="p-2 shadow lg:flex  gap-3 rounded-lg w-full my-3">
+        <div className="p-2 shadow md:flex  gap-3 rounded-lg  my-3">
           <div className="relative ">
             <img
               src={info?.snippet?.thumbnails?.medium?.url}
@@ -23,17 +21,11 @@ const RelatedVideoCard = ({ info }) => {
           <div className="w-full">
             <div className="text-base font-semibold word-break-all ">
               <a
-              className="line-clamp-2"
-                data-for={"my-tooltip" + info.id}
-                data-tip={info?.snippet?.title}
+              className="line-clamp-2" title={info?.snippet?.title}
               >
                 {info?.snippet?.title}
               </a>
-              <Tooltip id={"my-tooltip" + info.id} />
             </div>
-              <Tooltip anchorSelect=".my-anchor-element" place="top">
-                Hello world!
-              </Tooltip>
             <div className="text-xs">{info?.snippet?.channelTitle}</div>
             {info?.statistics && (
               <p>
@@ -64,7 +56,7 @@ const RelatedVideoList = ({ VideoCategoryID }) => {
   return (
     <>
       {videoCategoryList.length === 0 && <RelatedShimmer />}
-      <div className="px-5 mx-2 w-full">
+      <div className="px-5 mx-2 ">
         {videoCategoryList.length > 0 &&
           videoCategoryList.map((videocat) => (
             <RelatedVideoCard key={videocat.id} info={videocat} />

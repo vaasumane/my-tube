@@ -1,3 +1,5 @@
+import { YOUTUBE_API_KEY, YOUTUBE_VIDEO_DETAIL_URL } from "./constant";
+
 export function formatNumber(num) {
   if (num >= 1000000000) {
     return (num / 1000000000).toFixed(1) + " B";
@@ -55,3 +57,26 @@ export const convertDuration = (duration) => {
 
   return formattedDuration;
 };
+export function formatSubscriberCount(count) {
+  count = Number(count);
+
+  if (count >= 1000000) {
+      return (count / 1000000).toFixed(2) + "M";
+  }
+  else if (count >= 1000) {
+      return (count / 1000).toFixed(2) + "K";
+  } else {
+      return count.toString();
+  }
+}
+export const Videostatistics = async(channel_id,field)=>{
+  const data = await fetch(
+    `${YOUTUBE_VIDEO_DETAIL_URL}id=${channel_id}&key=${YOUTUBE_API_KEY}`
+  );
+  const videoData = await data.json();
+  if (videoData?.items?.[0]) {
+    return videoData?.items?.[0];
+  }else{
+    return null;
+  }
+}

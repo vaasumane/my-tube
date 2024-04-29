@@ -123,6 +123,7 @@ const VideoList = () => {
       <div className="flex flex-wrap justify-center" id="video-list">
         {getvideoList1.length > 0 &&
           getvideoList1.map((video, index) => (
+           
             <VideoCard
               key={video.id + index}
               info={video}
