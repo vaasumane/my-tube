@@ -7,7 +7,7 @@ const RelatedVideoCard = ({ info }) => {
   return (
     <>
       <div>
-        <div className="p-2 shadow md:flex  gap-3 rounded-lg  my-3">
+        <div className="p-2 shadow md:flex lg:block xl:flex  gap-3 rounded-lg  my-3">
           <div className="relative ">
             <img
               src={info?.snippet?.thumbnails?.medium?.url}
@@ -56,7 +56,7 @@ const RelatedVideoList = ({ VideoCategoryID }) => {
   return (
     <>
       {videoCategoryList.length === 0 && <RelatedShimmer />}
-      <div className="px-5 mx-2 ">
+      <div className="mx-2">
         {videoCategoryList.length > 0 &&
           videoCategoryList.map((videocat) => (
             <RelatedVideoCard key={videocat.id} info={videocat} />

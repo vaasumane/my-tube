@@ -55,12 +55,13 @@ const WatchPage = () => {
 
   return (
     <>
+
       {showShimmer ? (
         <WatchShimmer />
       ) : (
-        <div className="col-span-11 p-5 lg:m-2">
+        <div className="col-span-11 p-5 lg:m-2 w-full">
           <div className="lg:flex justify-between">
-            <div className="lg:w-2/3">
+            <div className="lg:w-2/3 ">
               <iframe
                 src={"https://www.youtube.com/embed/" + videoId}
                 title="YouTube video player"
@@ -68,10 +69,10 @@ const WatchPage = () => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
-                className="rounded-xl md:w-[900px] md:h-[500px]"
+                className="rounded-xl mx-auto xl:w-[900px] md:w-[700px] md:h-[500px] iframe-video"
               ></iframe>
 
-              <div className="py-5">
+              <div className="py-5 mx-auto">
                 <h1 className="text-2xl font-bold break-words">
                   {videoDetails?.[0]?.snippet?.title}
                 </h1>
@@ -168,11 +169,11 @@ const WatchPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="hidden lg:block">
+              <div className="hidden lg:block ">
                 <VideooComments videoId={videoId} />
               </div>
             </div>
-            <div className={isMenuOpenStatus ? "lg:w-1/4" : "lg:w-1/3"}>
+            <div className={ "w-full" + isMenuOpenStatus ? "lg:w-1/4" : "lg:w-1/3"}>
               {/* <LiveMessages />
                */}
               <RelatedVideoList VideoCategoryID="24" />

@@ -36,3 +36,11 @@
     top: 130px;
   }
 }
+
+@media (min-width: 376px) and (max-width: 426px) {
+  .iframe-video {
+    height: 217px !important;
+    width: 375px!important;
+  }
+}
+
