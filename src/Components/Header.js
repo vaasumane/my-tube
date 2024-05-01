@@ -109,7 +109,7 @@ const Header = () => {
             />
             <button
               type="button"
-              className="border border-gray-400 p-2 rounded-r-full bg-gray-100"
+              className="border border-gray-400 p-2 rounded-r-full bg-gray-100" onClick={() => setSelectedText(searchQuery)}
             >
               🔍
             </button>
