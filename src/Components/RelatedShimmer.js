@@ -4,7 +4,7 @@ const RelatedShimmer = () => {
   return (
     <div className='w-full'>
         {Array(7).fill("").map((e,index) => (
-            <div className="p-2 shadow xl:flex  gap-3 rounded-lg w-full my-3">
+            <div className="p-2 shadow xl:flex  gap-3 rounded-lg w-full my-3" key={index}>
             <div className='relative'>
             
               <div className="w-40 h-24 object-cover rounded-lg bg-gray-200"

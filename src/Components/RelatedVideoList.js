@@ -51,7 +51,6 @@ const RelatedVideoList = ({ VideoCategoryID }) => {
     );
     const data = await response.json();
     setVideoCategoryList(data?.items);
-    console.log(data.items);
   };
   return (
     <>

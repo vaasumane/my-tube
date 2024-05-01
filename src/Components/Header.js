@@ -36,21 +36,20 @@ const Header = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    const handleScroll = (event) =>{
-        const scrollTarget = document.getElementById('scrollTarget');
-        if (window.scrollY > 100) {
-          scrollTarget.classList.add('fixed');
-        } else {
-          scrollTarget.classList.remove('fixed');
-        }
-    }
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = (event) => {
+      const scrollTarget = document.getElementById("scrollTarget");
+      if (window.scrollY > 100) {
+        scrollTarget.classList.add("fixed");
+      } else {
+        scrollTarget.classList.remove("fixed");
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
     };
-    
   }, []);
 
   const getSearchedItems = async () => {
@@ -67,7 +66,9 @@ const Header = () => {
     dispatch(setSearchText(searchText));
     setShowSuggestionList(false);
     setSearchQuery(searchText);
-    // window.location.href = "/";
+    if (window.location.pathname !== "/") {
+      window.location.href = "/";
+    }
   };
   const HandleSearchChange = (searchText) => {
     setSearchQuery(searchText);
@@ -75,11 +76,14 @@ const Header = () => {
       dispatch(setSearchText(""));
     }
   };
- 
+
   return (
     <>
       <header className="flex shadow-sm bg-white font-[sans-serif] min-h-[70px] relative">
-        <div id="scrollTarget" className="flex flex-wrap items-center justify-between sm:px-10 px-6 py-3  lg:gap-y-4 gap-y-6 gap-x-4 w-full  bg-white z-10">
+        <div
+          id="scrollTarget"
+          className="flex flex-wrap items-center justify-between sm:px-10 px-6 py-3  lg:gap-y-4 gap-y-6 gap-x-4 w-full  bg-white z-10"
+        >
           <div className=" flex items-center">
             <img
               src="./hamburger-menu.png"
@@ -100,6 +104,7 @@ const Header = () => {
               value={searchQuery}
               onChange={(e) => HandleSearchChange(e.target.value)}
               onFocus={() => setShowSuggestionList(true)}
+              onClick={() => setShowSuggestionList(true)}
               // onBlur={() => setShowSuggestionList(false)}
             />
             <button
@@ -110,7 +115,10 @@ const Header = () => {
             </button>
             {showSuggestionList && (
               //
-              <ul className="absolute mr-4 w-10/12 bg-white rounded-lg" ref={dropdownRef}>
+              <ul
+                className="absolute mr-4 w-10/12 bg-white rounded-lg"
+                ref={dropdownRef}
+              >
                 {searchList.map((search) => {
                   return (
                     <li
